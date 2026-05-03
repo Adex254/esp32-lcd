@@ -4,13 +4,28 @@
 LiquidCrystal_I2C lcd(0x3F, 16, 2);
 
 void setup() {
-  delay(1000);              // Wait for LCD to power up fully
-  Wire.begin(21, 22);
-  delay(100);               // Let I2C bus stabilise
+  Serial.begin(115200);
+  delay(1000);
 
-  lcd.init();               // First init
+  // ESP32 I2C pins
+  Wire.begin(21, 22);
+
+  // CRITICAL FIX: Slow down to 100kHz for PCF8574 backpack compatibility
+  Wire.setClock(100000);
+  delay(200);
+
+  // Scan to confirm LCD is reachable
+  Wire.beginTransmission(0x3F);
+  byte error = Wire.endTransmission();
+  if (error == 0) {
+    Serial.println("LCD found at 0x3F");
+  } else {
+    Serial.println("LCD NOT found — check wiring or address");
+  }
+
+  lcd.init();
   delay(50);
-  lcd.init();               // Second init — fixes ESP32 I2C cold-start issue
+  lcd.init();
   lcd.backlight();
 
   lcd.clear();
