@@ -20,13 +20,12 @@ jobs:
 
       - name: Install Library
         run: |
-          # Using the specific name for the most reliable library version
           arduino-cli lib install "LiquidCrystal I2C"
 
       - name: Compile Sketch
         run: |
           arduino-cli compile \
-            --fqbn esp32:esp32:esp32 \
+            --fqbn esp32:esp32:esp32doit-devkit-v1 \
             --output-dir build_out \
             ./lcd_test
 
