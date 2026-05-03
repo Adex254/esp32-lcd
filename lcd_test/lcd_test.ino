@@ -1,18 +1,18 @@
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
 
-// Using the confirmed address 0x3F
 LiquidCrystal_I2C lcd(0x3F, 16, 2);
 
 void setup() {
-  // Direct pin assignment
+  delay(1000);              // Wait for LCD to power up fully
   Wire.begin(21, 22);
-  
-  // Standard initialization
-  lcd.init();
+  delay(100);               // Let I2C bus stabilise
+
+  lcd.init();               // First init
+  delay(50);
+  lcd.init();               // Second init — fixes ESP32 I2C cold-start issue
   lcd.backlight();
-  
-  // Clear and Print
+
   lcd.clear();
   lcd.setCursor(0, 0);
   lcd.print("ADEOYE");
@@ -21,5 +21,4 @@ void setup() {
 }
 
 void loop() {
-  // Stay quiet to avoid I2C bus noise
 }
