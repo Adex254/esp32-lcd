@@ -1,29 +1,33 @@
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
 
-// Using the confirmed address 0x3F
+// Using 0x3F as confirmed by your previous success
 LiquidCrystal_I2C lcd(0x3F, 16, 2);
 
 void setup() {
-  // Initialize I2C on the standard pins
+  // 1. Give the hardware a moment to stabilize power
+  delay(1000); 
+
+  // 2. Start I2C on Pins 21 and 22
   Wire.begin(21, 22);
-  
-  // Basic initialization sequence
+  delay(100);
+
+  // 3. Initialize LCD
   lcd.init();
   lcd.backlight();
-  lcd.clear();
   
-  // Print to the screen
+  // 4. Print messages
+  lcd.clear();
   lcd.setCursor(0, 0);
-  lcd.print("ADEOYE TEST");
+  lcd.print("ADEOYE ONLINE");
   lcd.setCursor(0, 1);
-  lcd.print("LCD IS ALIVE!");
+  lcd.print("LCD TEST OK");
 }
 
 void loop() {
-  // Blink the backlight every 2 seconds to show the code is running
+  // Heartbeat: Blink the backlight so we know the ESP32 hasn't crashed
   lcd.backlight();
-  delay(2000);
+  delay(1000);
   lcd.noBacklight();
-  delay(500);
+  delay(1000);
 }
