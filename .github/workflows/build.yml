@@ -1,4 +1,4 @@
-name: LCD Only Test
+name: LCD Restore Test
 
 on: [push]
 
@@ -20,8 +20,8 @@ jobs:
 
       - name: Install Library
         run: |
-          # Locking to version 1.1.2 to ensure compatibility
-          arduino-cli lib install "LiquidCrystal I2C"@1.1.2
+          # Using the specific name for the most reliable library version
+          arduino-cli lib install "LiquidCrystal I2C"
 
       - name: Compile Sketch
         run: |
@@ -33,7 +33,7 @@ jobs:
       - name: Merge to Single Binary
         run: |
           pip install esptool
-          esptool.py --chip esp32 merge_bin -o lcd_only.bin \
+          esptool.py --chip esp32 merge_bin -o adeoye_fixed.bin \
             --flash_mode dio --flash_freq 40m --flash_size 4MB \
             0x1000 build_out/lcd_test.ino.bootloader.bin \
             0x8000 build_out/lcd_test.ino.partitions.bin \
@@ -42,5 +42,5 @@ jobs:
       - name: Upload Finished File
         uses: actions/upload-artifact@v4
         with:
-          name: lcd-test-bin
-          path: lcd_only.bin
+          name: fixed-binary
+          path: adeoye_fixed.bin
