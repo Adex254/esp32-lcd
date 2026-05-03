@@ -20,10 +20,10 @@ jobs:
 
       - name: Install Library
         run: |
-          # Specifically installing the most common I2C library
-          arduino-cli lib install "LiquidCrystal I2C"
+          # Locking to version 1.1.2 to ensure compatibility
+          arduino-cli lib install "LiquidCrystal I2C"@1.1.2
 
-      - name: Compile
+      - name: Compile Sketch
         run: |
           arduino-cli compile \
             --fqbn esp32:esp32:esp32 \
@@ -39,7 +39,7 @@ jobs:
             0x8000 build_out/lcd_test.ino.partitions.bin \
             0x10000 build_out/lcd_test.ino.bin
 
-      - name: Upload
+      - name: Upload Finished File
         uses: actions/upload-artifact@v4
         with:
           name: lcd-test-bin
