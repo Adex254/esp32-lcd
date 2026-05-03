@@ -19,7 +19,7 @@ jobs:
           arduino-cli core update-index --additional-urls https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json
           arduino-cli core install esp32:esp32
 
-      - name: Install Specific Library
+      - name: Install Library
         run: |
           arduino-cli lib install "LiquidCrystal I2C"
 
@@ -28,7 +28,7 @@ jobs:
           arduino-cli compile \
             --fqbn esp32:esp32:esp32doit-devkit-v1 \
             --output-dir build_out \
-            ./lcd_test.ino
+            ./lcd_test/lcd_test.ino
 
       - name: Merge to Single Binary
         run: |
